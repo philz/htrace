@@ -131,14 +131,15 @@ public class LocalFileSpanReceiver implements SpanReceiver {
     @Override
     public void run() {
       try {
-        values.put("SpanID", span.getSpanId());
-        values.put("TraceID", span.getTraceId());
-        values.put("ParentID", span.getParentId());
+        values.put("SpanID", Long.toHexString(span.getSpanId()));
+        values.put("TraceID", Long.toHexString(span.getTraceId()));
+        values.put("ParentID", Long.toHexString(span.getParentId()));
         values.put("Start", span.getStartTimeMillis());
         values.put("Stop", span.getStopTimeMillis());
         values.put("Description", span.getDescription());
         values.put("Annotations", span.getAnnotations());
         bwriter.write(JSON.toString(values));
+        bwriter.write('\n');
         bwriter.flush();
         values.clear();
       } catch (IOException e) {
